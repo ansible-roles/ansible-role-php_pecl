@@ -1,0 +1,16 @@
+---
+
+galaxy_info:
+  author: igor_mukhin
+  description: Install PECL extensions for PHP via pecl or apt
+  license: "MIT"
+  min_ansible_version: 1.4
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+  categories:
+    - web

@@ -1,0 +1,5 @@
+---
+
+php_pecl_extensions: false
+php_pecl_apt_packages: false
+php_pecl_modules_enable: false

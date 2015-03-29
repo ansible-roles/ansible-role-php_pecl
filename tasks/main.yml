@@ -1,0 +1,39 @@
+---
+
+- name: PHP-PECL | Install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items: php_pecl_apt_packages
+  when: php_pecl_apt_packages != false
+
+- name: PHP-PECL | Install extensions
+  shell: >
+    echo "\n\n\n\n\n\n\n\n\n\n" | pecl install {{ item }}
+  register: pecl_result
+  changed_when: "'already installed' not in pecl_result.stdout"
+  failed_when: "pecl_result.stderr or ('ERROR' in pecl_result.stdout)"
+  with_items: php_pecl_extensions
+  when: php_pecl_extensions != false
+
+- name: PHP-PECL | Create extensions .ini files
+  template:
+    src: "extension.ini.j2"
+    dest: "/etc/php5/mods-available/{{ item }}.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: php_pecl_extensions
+  when: php_pecl_extensions != false
+
+- name: PHP-PECL | Generate list of modules to enable
+  set_fact:
+    php_pecl_modules_enable: "{{ php_pecl_extensions }}"
+  when: php_pecl_modules_enable is not defined or php_pecl_modules_enable == false
+
+- name: PHP-PECL | Enable extensions
+  shell: >
+    php5enmod {{ item }}
+  with_items: php_pecl_modules_enable
+  when: php_pecl_modules_enable != false
