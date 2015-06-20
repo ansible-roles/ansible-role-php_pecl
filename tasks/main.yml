@@ -30,7 +30,7 @@
 - name: PHP-PECL | Generate list of modules to enable
   set_fact:
     php_pecl_modules_enable: "{{ php_pecl_extensions }}"
-  when: php_pecl_modules_enable is not defined or php_pecl_modules_enable == false
+  when: php_pecl_modules_enable == false and php_pecl_extensions != false
 
 - name: PHP-PECL | Enable extensions
   shell: >
