@@ -1,5 +1,46 @@
 ---
 
+# Some customizable defaults
+php_pecl_extensions_default_priority: 20
+php_pecl_mods_available_path: "/etc/php5/mods-available"
+
+# Extensions list
+# Will be installed via pecl
+#
+# 1. Don't install any extension via pecl
 php_pecl_extensions: false
+# 2. Simplified list format
+#php_pecl_extensions:
+#  - one
+#  - two
+# 3. List with extra parameters
+#php_pecl_extensions:
+#  - extension: one
+#    type: "extension" # Default value, you can omit this
+#    priority: 99
+#  - extension: two
+#    type: "zend_extension"
+#    extras:
+#      key: value
+
+# Apt-packages
+# Will be installed via apt-get
+#
+# 1. Don't install any extension via apt-get
 php_pecl_apt_packages: false
+# 2. Install list of packages
+#php_pecl_apt_packages: false
+#  - php5-intl
+
+# Enabling modules
+#
+# 1. Autogenerate (enable all extensions from `php_pecl_extensions`)
 php_pecl_modules_enable: false
+#
+# 2. Don't enable any module
+#php_pecl_modules_enable: []
+#
+# 3. Enable listed modules only
+# Useful when modules installed via apt-get
+#php_pecl_modules_enable:
+#  - intl

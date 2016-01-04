@@ -35,3 +35,23 @@ Also, you can install apt packages that do same things:
 
   roles:
     - { role: igor_mukhin.php_pecl }
+```
+
+Extra options:
+
+```yml
+- hosts: all
+  vars:
+    php_pecl_extensions:
+      - extension: opcache
+        type: "zend_extension"
+        priority: "05"
+      - extension: xdebug
+        path: "/usr/lib/php5/20090626+lfs"
+        extras:
+            xdebug.remote_enable: "on"
+            xdebug.remote_host: "localhost"
+            xdebug.remote_port: 9000
+  roles:
+    - { role: igor_mukhin.php_pecl }
+```

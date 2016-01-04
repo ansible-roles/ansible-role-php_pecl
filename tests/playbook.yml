@@ -1,0 +1,20 @@
+---
+
+- hosts: all
+  sudo: true
+
+  vars:
+    php_pecl_apt_packages:
+      - php-pear
+      - php5-dev
+      - php5-xdebug
+    php_pecl_extensions:
+      - extension: xdebug
+        priority: 30
+        extras:
+          xdebug.remote_enable: "on"
+          xdebug.remote_host: "localhost"
+          xdebug.remote_port: 9000
+
+  roles:
+    - "../../ansible-role-php_pecl"

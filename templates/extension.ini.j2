@@ -1,4 +1,15 @@
 ; {{ ansible_managed }}
-; configuration for php PECL {{ item }} extension
-; priority=20
-extension={{ item }}.so
+; configuration for php PECL {{ item.extension|default(item) }} extension
+; priority={{ item.priority|default(php_pecl_extensions_default_priority) }}
+{% if item.path|default("") %}
+    {{ item.type|default("extension") }}="{{ item.path }}/{{ item.extension }}.so"
+{% else %}
+    {{ item.type|default("extension") }}={{ item.extension|default(item) }}.so
+{% endif %}
+
+; Extra configuration
+{% if item.extras|default(false) %}
+    {% for key, value in item.extras.iteritems() %}
+        {{ key }}={{ value }}
+    {% endfor %}
+{% endif %}

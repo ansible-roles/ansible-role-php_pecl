@@ -10,7 +10,7 @@
 
 - name: PHP-PECL | Install extensions
   shell: >
-    echo "\n\n\n\n\n\n\n\n\n\n" | pecl install {{ item }}
+    echo "\n\n\n\n\n\n\n\n\n\n" | pecl install {{ item.extension|default(item) }}
   register: pecl_result
   changed_when: "'already installed' not in pecl_result.stdout"
   failed_when: "pecl_result.stderr or ('ERROR' in pecl_result.stdout)"
@@ -20,7 +20,7 @@
 - name: PHP-PECL | Create extensions .ini files
   template:
     src: "extension.ini.j2"
-    dest: "/etc/php5/mods-available/{{ item }}.ini"
+    dest: "{{ php_pecl_mods_available_path }}/{{ item.extension|default(item) }}.ini"
     owner: root
     group: root
     mode: 0644
@@ -29,7 +29,7 @@
 
 - name: PHP-PECL | Generate list of modules to enable
   set_fact:
-    php_pecl_modules_enable: "{{ php_pecl_extensions }}"
+    php_pecl_modules_enable: "{% for item in php_pecl_extensions %}{{ item.extension|default(item) }}{% endfor %}"
   when: php_pecl_modules_enable == false and php_pecl_extensions != false
 
 - name: PHP-PECL | Enable extensions
